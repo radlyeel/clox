@@ -3,17 +3,16 @@ PROG = clox
 CC = clang
 CFLAGS =  -Wall -Werror
 
-OBJS = main.o
+OBJS = chunk.o main.o memory.o debug.o
 
-clox: main.o
-	$(CC) main.o -o clox
+clox: $(OBJS)
+	$(CC) $(OBJS) -o $(PROG)
 
 %.o: %.c
-main.o: main.c
 	$(CC) -c $(CFLAGS) $< -o $@
 
 clean:
-	rm -f $((PROG) $(OBJS)
+	rm -f $(PROG) $(OBJS)
 
 check: $(PROG)
 	./$(PROG)
