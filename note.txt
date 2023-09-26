@@ -2,7 +2,7 @@ The CLox interpreter begins in Chapter 14 of Crafting Interpreters.
 I abandoned JLox due to the complexity of GenerateAst in Ch. 5.  
 Judging by the first few paragraphs of Ch. 14, it was no grat loss.
 
-You Are Here: 14.6 -- Challenges
-https://craftinginterpreters.com/chunks-of-bytecode.html#line-information
+You Are Here: 15.1.2 -- Execution tracing
+http://craftinginterpreters.com./a-virtual-machine.html#execution-tracing
 
 
