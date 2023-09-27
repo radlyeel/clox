@@ -20,7 +20,9 @@ int main(int argc, const char* argv[]) {
     writeChunk(&chunk, OP_RETURN, 123);
 
     // Display the resulting list
-    disassembleChunk(&chunk, "test chunk");
+    //disassembleChunk(&chunk, "test chunk");
+
+    // Interpret the chunk
     interpret(&chunk);
     freeVM();
     freeChunk(&chunk);
