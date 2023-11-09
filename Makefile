@@ -1,9 +1,16 @@
 PROG = clox
 
 CC = clang
-CFLAGS =  -Wall -Werror
+CFLAGS =  -Wall
 
-OBJS = chunk.o main.o memory.o debug.o value.o vm.o
+OBJS = chunk.o\
+	   main.o\
+	   memory.o\
+	   debug.o\
+	   value.o\
+	   vm.o\
+	   compiler.o\
+	   scanner.o
 
 clox: $(OBJS)
 	$(CC) $(OBJS) -o $(PROG)
@@ -12,7 +19,7 @@ clox: $(OBJS)
 	$(CC) -c $(CFLAGS) $< -o $@
 
 clean:
-	rm -f $(PROG) *.o
+	rm -f $(PROG)$(OBJS) 
 
 check: $(PROG)
 	./$(PROG)

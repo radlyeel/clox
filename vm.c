@@ -2,6 +2,7 @@
 #include "common.h"
 #include "debug.h"
 #include "vm.h"
+#include "compiler.h"
 
 VM vm; 
 
@@ -27,7 +28,7 @@ Value pop() {
     vm.stackTop--;
     return *vm.stackTop;
 }
-
+/*
 static InterpretResult run() {
     //This is looking a lot like Forth
 #define READ_BYTE() (*vm.ip++)
@@ -77,11 +78,9 @@ static InterpretResult run() {
 #undef READ_BYTE
 #undef BINARY_OP
 }
-
-InterpretResult interpret(Chunk* chunk) {
-  vm.chunk = chunk;
-
-  vm.ip = vm.chunk->code;
-  return run();
+*/
+InterpretResult interpret(const char* source) {
+    compile(source);
+    return INTERPRET_OK;
 }
 
