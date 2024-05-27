@@ -7,6 +7,7 @@ void initChunk(Chunk* chunk) {
     // A Chunk starts empty
     chunk->count = 0;
     chunk->capacity = 0;
+    chunk->code = NULL;
 } 
 
 void writeChunk(Chunk* chunk, uint8_t byte) {

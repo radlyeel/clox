@@ -1,0 +1,4 @@
+# Intermediate and built stuff.
+clox
+*.o
+
