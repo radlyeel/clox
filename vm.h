@@ -1,0 +1,37 @@
+#ifndef clox_vm_h
+#define clox_vm_h
+
+#include "chunk.h"
+#include "value.h"
+#define STACK_MAX 256
+
+// The one global VM
+//TODO:  Eliminate tho "global-ness" so we can integrate th interpreter into
+// an app. Seee footnote in 15.1
+typedef struct {
+  Chunk* chunk;
+  uint8_t* ip;
+  // Value Stack
+  Value stack[STACK_MAX];
+  // pointer to next available slot
+  Value* stackTop;
+} VM;
+
+typedef enum {
+  INTERPRET_OK,
+  INTERPRET_COMPILE_ERROR,
+  INTERPRET_RUNTIME_ERROR
+} InterpretResult;
+
+void initVM();
+void freeVM();
+void resetStack();
+void push(Value value);
+Value pop();
+
+InterpretResult interpret(Chunk* chunk);
+
+
+#endif
+
+
