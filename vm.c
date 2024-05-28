@@ -48,8 +48,7 @@ static InterpretResult run() {
                   // initialization above switch.  This is only an issue 
                   // because Vim is lame about braces inside 'switch'es
                     Value constant = READ_CONSTANT();
-                    printValue(constant);
-                    printf("\n");
+                    push(constant);
                     break;
                 }
         }
