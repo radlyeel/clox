@@ -1,4 +1,5 @@
 #include "common.h"
+#include "compiler.h"
 #include "debug.h"
 #include "vm.h"
 #include "value.h"
@@ -12,7 +13,7 @@ void initVM() {
 
 void freeVM() {
 }
-
+/*
 static InterpretResult run() {
 
 // Macros are faster than functions
@@ -69,11 +70,10 @@ static InterpretResult run() {
 #undef READ_CONSTANT
 #undef BINARY_OP
 }
-
-InterpretResult interpret(Chunk* chunk) {
-  vm.chunk = chunk;
-  vm.ip = vm.chunk->code;
-  return run();
+*/
+InterpretResult interpret(const char* source) {
+  compile(source);
+  return INTERPRET_OK;
 }
 
 // Stack operations
