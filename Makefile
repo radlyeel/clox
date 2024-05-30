@@ -1,5 +1,4 @@
 PROG = clox
-SRC =
 OBJS  = main.o chunk.o memory.o debug.o value.o vm.o compiler.o scanner.o
 CC = gcc
 CFLAGS  = -std=c99 -Wall -Werror
