@@ -13,7 +13,6 @@ void initVM() {
 
 void freeVM() {
 }
-/*
 static InterpretResult run() {
 
 // Macros are faster than functions
@@ -70,7 +69,7 @@ static InterpretResult run() {
 #undef READ_CONSTANT
 #undef BINARY_OP
 }
-*/
+
 InterpretResult interpret(const char* source) {
     Chunk chunk;
     initChunk(&chunk);
