@@ -174,7 +174,7 @@ static void number() {
     //    strtod is a good example of Rust's raison d'etre
     //    because an ill-formed string returns 0.
     double value = strtod(parser.previous.start, NULL);
-    emitConstant(value);
+    emitConstant(NUMBER_VAL(value));
 }
 
 static void expression() {
