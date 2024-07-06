@@ -92,18 +92,21 @@ static InterpretResult run() {
                   push(NUMBER_VAL(-AS_NUMBER(pop())));
                   break;
             case OP_RETURN:
-                              printValue(pop());
-                              printf("\n");
-                              return INTERPRET_OK;
+                  printValue(pop());
+                  printf("\n");
+                  return INTERPRET_OK;
             case OP_CONSTANT: 
-                              { // Braces are needed to allow local declarations 
-                                // They can be eliminated by moving their declaration and
-                                // initialization above switch.  This is only an issue 
-                                // because Vim is lame about braces inside 'switch'es
-                                  Value constant = READ_CONSTANT();
-                                  push(constant);
-                                  break;
-                              }
+                  { // Braces are needed to allow local declarations 
+                    // They can be eliminated by moving their declaration and
+                    // initialization above switch.  This is only an issue 
+                    // because Vim is lame about braces inside 'switch'es
+                      Value constant = READ_CONSTANT();
+                      push(constant);
+                      break;
+                  }
+            case OP_NIL: push(NIL_VAL); break;
+            case OP_TRUE: push(BOOL_VAL(true)); break;
+            case OP_FALSE: push(BOOL_VAL(false)); break;
         }
     }
 #undef READ_BYTE
