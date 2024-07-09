@@ -35,5 +35,6 @@ void printValue(Value value) {
             break;
         case VAL_NIL: printf("nil"); break;
         case VAL_NUMBER: printf("%g", AS_NUMBER(value)); break;
+        case VAL_OBJ: break;
     }
 }
