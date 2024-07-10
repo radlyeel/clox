@@ -115,8 +115,12 @@ static InterpretResult run() {
               }
               break;
             }
-
-            
+            case OP_EQUAL: {
+                 Value b = pop();
+                 Value a = pop();
+                 push(BOOL_VAL(valuesEqual(a, b)));
+                 break;
+             }
             case OP_SUBTRACT: BINARY_OP(NUMBER_VAL, -); break;
             case OP_MULTIPLY: BINARY_OP(NUMBER_VAL, *); break;
             case OP_DIVIDE:   BINARY_OP(NUMBER_VAL, /); break;
