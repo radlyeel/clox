@@ -4,6 +4,7 @@
 #include "memory.h"
 #include "value.h"
 #include "object.h"
+#include "debug.h"
 
 // See chubk.c for models of these dynamic array functions
 void initValueArray(ValueArray* array) {
@@ -43,6 +44,7 @@ void printValue(Value value) {
 
 
 bool valuesEqual(Value a, Value b) {
+    dprintf("a == b?\n");
     if (a.type != b.type) return false;
     switch (a.type) {
         case VAL_BOOL:   return AS_BOOL(a) == AS_BOOL(b);
