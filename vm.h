@@ -15,6 +15,7 @@ typedef struct {
   Value stack[STACK_MAX];
   // pointer to next available slot
   Value* stackTop;
+  Obj*   objects;    // For GC
 } VM;
 
 typedef enum {
@@ -22,6 +23,8 @@ typedef enum {
   INTERPRET_COMPILE_ERROR,
   INTERPRET_RUNTIME_ERROR
 } InterpretResult;
+
+extern VM vm;
 
 void initVM();
 void freeVM();

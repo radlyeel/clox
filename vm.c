@@ -13,6 +13,7 @@ VM vm;
 
 void initVM() {
     resetStack();
+    vm.objects = NULL;
 }
 
 
@@ -65,6 +66,7 @@ static void concatenate() {
 }
 
 void freeVM() {
+    freeObjects();
 }
 static InterpretResult run() {
 

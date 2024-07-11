@@ -20,6 +20,7 @@ typedef enum {
 // access the type field from it.'
 struct Obj {
     ObjType type;
+    struct Obj* next;     //useful for GC
 };
 
 struct ObjString {
