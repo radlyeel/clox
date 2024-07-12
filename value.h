@@ -46,6 +46,7 @@ typedef struct {
   int count;
   Value* values;
 } ValueArray;
+
 void initValueArray(ValueArray* array);
 void writeValueArray(ValueArray* array, Value value);
 void freeValueArray(ValueArray* array);

@@ -7,7 +7,8 @@ OBJS  = main.o \
 	vm.o \
 	compiler.o \
 	scanner.o \
-	object.o
+	object.o \
+        table.o \
 
 CC = gcc
 CFLAGS  = -std=c99 -Wall -Werror

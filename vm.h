@@ -3,6 +3,7 @@
 
 #include "chunk.h"
 #include "value.h"
+#include "table.h"
 #define STACK_MAX 256
 
 // The one global VM
@@ -15,6 +16,7 @@ typedef struct {
   Value stack[STACK_MAX];
   // pointer to next available slot
   Value* stackTop;
+  Table strings;
   Obj*   objects;    // For GC
 } VM;
 
