@@ -1,1 +1,2 @@
-"st" + "ri" + "ng"
+print "st" + "ri" + "ng";
+print 6 * 7;
