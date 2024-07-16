@@ -5,7 +5,7 @@
 
 #ifdef DEBUG_TRACE_EXECUTION
 #include <stdio.h>
-#define dprintf(...) fprintf(stderr, __VA_ARGS__)
+#define dprintf(...) printf(__VA_ARGS__)
 #else
 #define dprintf(...)
 #endif

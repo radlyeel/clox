@@ -11,6 +11,9 @@
 
 //TODO: Re-read 17.5 & 17.6
 
+// A few forward declarations, to relieve pressure on placement of definitions
+static void expression();
+
 typedef void (*ParseFn)();
 
 typedef struct {
@@ -225,7 +228,6 @@ static void expression() {
     parsePrecedence(PREC_ASSIGNMENT);
 }
 
-
 static uint8_t parseVariable(const char* errorMessage) {
     consume(TOKEN_IDENTIFIER, errorMessage);
     return identifierConstant(&parser.previous);
@@ -247,18 +249,6 @@ static void varDeclaration() {
             "Expect ';' after variable declaration.");
 
     defineVariable(global);
-}
-
-static void expressionStatement() {
-    expression();
-    consume(TOKEN_SEMICOLON, "Expect ';' after expression.");
-    emitByte(OP_POP);
-}
-
-static void printStatement() {
-    expression();
-    consume(TOKEN_SEMICOLON, "Expect ';' after value.");
-    emitByte(OP_PRINT);
 }
 
 static void synchronize() {
@@ -284,16 +274,27 @@ static void synchronize() {
         advance();
     }
 }
-
 static void declaration() {
     if (match(TOKEN_VAR)) {
         varDeclaration();
     } else {
         statement();
+        if (parser.panicMode) synchronize();
     }
-    if (parser.panicMode) synchronize();
 }
 
+
+static void expressionStatement() {
+    expression();
+    consume(TOKEN_SEMICOLON, "Expect ';' after expression.");
+    emitByte(OP_POP);
+}
+
+static void printStatement() {
+    expression();
+    consume(TOKEN_SEMICOLON, "Expect ';' after value.");
+    emitByte(OP_PRINT);
+}
 static void statement() {
     if (match(TOKEN_PRINT)) {
         printStatement();
@@ -301,6 +302,8 @@ static void statement() {
         expressionStatement();
     }
 }
+
+
 
 // Note that grouping isn't visible in the bytecode stream
 static void grouping() {

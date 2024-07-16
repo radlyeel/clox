@@ -16,7 +16,6 @@ void initVM() {
     vm.objects = NULL;
     initTable(&vm.globals);
     initTable(&vm.strings);
-
 }
 
 
@@ -165,6 +164,8 @@ static InterpretResult run() {
             case OP_GET_GLOBAL: {
                 ObjString* name = READ_STRING();
                 Value value;
+                tableDump(&vm.globals, "Globals");
+                dprintf("Seeking %s\n", name->chars);
                 if (!tableGet(&vm.globals, name, &value)) {
                     runtimeError("Undefined variable '%s'.", name->chars);
                     return INTERPRET_RUNTIME_ERROR;
@@ -173,11 +174,12 @@ static InterpretResult run() {
                 break;
             }
             case OP_DEFINE_GLOBAL: {
-                     ObjString* name = READ_STRING();
-                     tableSet(&vm.globals, name, peek(0));
-                     pop();
-                     break;
-                 }
+                ObjString* name = READ_STRING();
+                tableSet(&vm.globals, name, peek(0));
+                pop();
+                tableDump(&vm.globals, "Globals");
+                break;
+            }
         }
     }
 #undef READ_BYTE
