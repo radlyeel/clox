@@ -16,6 +16,7 @@ typedef struct {
   Value stack[STACK_MAX];
   // pointer to next available slot
   Value* stackTop;
+  Table globals;
   Table strings;
   Obj*   objects;    // For GC
 } VM;

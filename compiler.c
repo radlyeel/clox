@@ -206,9 +206,47 @@ static void string() {
                     parser.previous.length - 2)));
 }
 
+static uint8_t identifierConstant(Token* name) {
+  return makeConstant(OBJ_VAL(copyString(name->start,
+                                         name->length)));
+}
+
+static void namedVariable(Token name) {
+    uint8_t arg = identifierConstant(&name);
+    emitBytes(OP_GET_GLOBAL, arg);
+}
+
+static void variable() {
+    namedVariable(parser.previous);
+}
+
 static void expression() {
     //  Assignment is the highest precedence
     parsePrecedence(PREC_ASSIGNMENT);
+}
+
+
+static uint8_t parseVariable(const char* errorMessage) {
+    consume(TOKEN_IDENTIFIER, errorMessage);
+    return identifierConstant(&parser.previous);
+}
+
+static void defineVariable(uint8_t global) {
+    emitBytes(OP_DEFINE_GLOBAL, global);
+}
+
+static void varDeclaration() {
+    uint8_t global = parseVariable("Expect variable name.");
+
+    if (match(TOKEN_EQUAL)) {
+        expression();
+    } else {
+        emitByte(OP_NIL);
+    }
+    consume(TOKEN_SEMICOLON,
+            "Expect ';' after variable declaration.");
+
+    defineVariable(global);
 }
 
 static void expressionStatement() {
@@ -248,7 +286,11 @@ static void synchronize() {
 }
 
 static void declaration() {
-    statement();
+    if (match(TOKEN_VAR)) {
+        varDeclaration();
+    } else {
+        statement();
+    }
     if (parser.panicMode) synchronize();
 }
 
@@ -303,7 +345,7 @@ ParseRule rules[] = {
     [TOKEN_GREATER_EQUAL] = {NULL,     NULL,   PREC_NONE},
     [TOKEN_LESS]          = {NULL,     NULL,   PREC_NONE},
     [TOKEN_LESS_EQUAL]    = {NULL,     NULL,   PREC_NONE},
-    [TOKEN_IDENTIFIER]    = {NULL,     NULL,   PREC_NONE},
+    [TOKEN_IDENTIFIER]    = {variable, NULL,   PREC_NONE},
     [TOKEN_STRING]        = {string,   NULL,   PREC_NONE},
     [TOKEN_NUMBER]        = {number,   NULL,   PREC_NONE},
     [TOKEN_AND]           = {NULL,     NULL,   PREC_NONE},

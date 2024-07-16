@@ -1,2 +1,3 @@
-print "st" + "ri" + "ng";
-print 6 * 7;
+var beverage = "cafe au lait";
+var breakfast = "beignets with " + beverage;
+print breakfast;

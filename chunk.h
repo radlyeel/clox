@@ -20,6 +20,8 @@ typedef enum {
   OP_EQUAL,
   OP_PRINT,
   OP_POP,
+  OP_GET_GLOBAL,
+  OP_DEFINE_GLOBAL,
 } OpCode;
 
 
