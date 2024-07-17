@@ -37,6 +37,7 @@ static Entry* findEntry(Entry* entries, int capacity, ObjString* key) {
                 if (tombstone == NULL) tombstone = entry;
             }
         } else if (strcmp(entry->key->chars, key->chars) == 0) {
+        // Why not? } else if (entry->key == key) {
             // We found the key.
             return entry;
         }

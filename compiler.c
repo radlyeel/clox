@@ -44,7 +44,20 @@ typedef struct {
     Precedence precedence;
 } ParseRule;
 
+typedef struct {
+    Token name;
+    int depth;
+} Local;
+
+typedef struct {
+    Local locals[UINT8_COUNT]; // reserve stack space for UINT8_COUNT locals
+    int localCount;            // how many locals are in scope
+    int scopeDepth;            // number of blocks surrounding the current 
+                               // bit of code we’re compiling.
+} Compiler;
+
 Parser parser;
+Compiler* current = NULL;
 
 Chunk* compilingChunk;
 
@@ -192,6 +205,13 @@ static uint8_t makeConstant(Value value) {
 static void emitConstant(Value value) {
     emitBytes(OP_CONSTANT, makeConstant(value));
 }
+
+static void initCompiler(Compiler* compiler) {
+    compiler->localCount = 0;
+    compiler->scopeDepth = 0;
+    current = compiler;
+}
+
 
 // To compile number literals, store a pointer to the following function at
 // the TOKEN_NUMBER index in the array.
@@ -395,6 +415,9 @@ static ParseRule* getRule(TokenType type) {
 
 bool compile(const char* source, Chunk* chunk) {
     initScanner(source);
+    Compiler compiler;
+    initCompiler(&compiler);
+
     compilingChunk = chunk;
 
     // Clear panic mode
