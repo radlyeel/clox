@@ -70,6 +70,7 @@ static void concatenate() {
 void freeVM() {
     freeTable(&vm.globals);
     freeTable(&vm.strings);
+    freeObjects();
 }
 
 static InterpretResult run() {
@@ -164,8 +165,6 @@ static InterpretResult run() {
             case OP_GET_GLOBAL: {
                 ObjString* name = READ_STRING();
                 Value value;
-                tableDump(&vm.globals, "Globals");
-                dprintf("Seeking %s\n", name->chars);
                 if (!tableGet(&vm.globals, name, &value)) {
                     runtimeError("Undefined variable '%s'.", name->chars);
                     return INTERPRET_RUNTIME_ERROR;
@@ -177,7 +176,6 @@ static InterpretResult run() {
                 ObjString* name = READ_STRING();
                 tableSet(&vm.globals, name, peek(0));
                 pop();
-                tableDump(&vm.globals, "Globals");
                 break;
             }
         }

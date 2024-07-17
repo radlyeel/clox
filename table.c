@@ -24,25 +24,23 @@ void freeTable(Table* table) {
 
 static Entry* findEntry(Entry* entries, int capacity, ObjString* key) {
     uint32_t index = key->hash % capacity;
-    dprintf("findEntry:key = %s, index = %d\n", key->chars, index);
-    for (;;) {
-        for (int i = 0; i < capacity; i++) {
-           Entry e = entries[i];
-           if (e.key == NULL) {
-               dprintf("i = %d key = %s\n", i, "NULL");
-           } else {
-               dprintf("i = %d key = %s\n", i, e.key->chars);
-           }
-        }
-        dprintf("\n");
+    Entry* tombstone = NULL;
 
+    for (;;) {
         Entry* entry = &entries[index];
-        if(entry->key != NULL) {
-            dprintf("FOUND %s\n", key->chars);
-        }
-        if (entry->key == NULL || strcmp(entry->key->chars, key->chars) == 0) {
+        if (entry->key == NULL) {
+            if (IS_NIL(entry->value)) {
+                // Empty entry.
+                return tombstone != NULL ? tombstone : entry;
+            } else {
+                // We found a tombstone.
+                if (tombstone == NULL) tombstone = entry;
+            }
+        } else if (strcmp(entry->key->chars, key->chars) == 0) {
+            // We found the key.
             return entry;
         }
+
         index = (index + 1) % capacity;
     }
 }
@@ -66,7 +64,6 @@ static void adjustCapacity(Table* table, int capacity) {
         entries[i].key = NULL;
         entries[i].value = NIL_VAL;
     }
-
     
     for (int i = 0; i < table->capacity; i++) {
         Entry* entry = &table->entries[i];
@@ -96,19 +93,6 @@ bool tableSet(Table* table, ObjString* key, Value value) {
     entry->key = key;
     entry->value = value;
     return isNewKey;
-}
-
-// This only works for string value tables
-void tableDump(Table* table, char* title) {
-    dprintf("%s:\n", title);
-    for (int k = 0; k < table->capacity; k++) {
-        Entry entry = table->entries[k];
-        if (entry.key != NULL) {
-            dprintf("k = %d, key = %s, v = %s\n", 
-                    k, entry.key->chars, AS_CSTRING(entry.value));
-        }
-    }
-    dprintf("\n");
 }
 
 bool tableDelete(Table* table, ObjString* key) {
